@@ -50,7 +50,11 @@ while True:
         if cy <= gestureThreshold:
             if fingers == [1, 0, 0, 0, 0]:
                 print("left")
+                if imgNumber > 0:
+                    imgNumber -= 1
             if fingers == [0, 0, 0, 0, 1]:
+                if imgNumber < len (pathImages) -1:
+                    imgNumber += 1
                 print("right")
             
  #adding image to cam
