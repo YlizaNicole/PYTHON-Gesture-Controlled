@@ -10,8 +10,9 @@ import os
 import numpy as np
 
 # setup variable
-width, height = 1500, 100
+width, height = 100, 100
 folderPath= "Presentation"
+imgNumber = 0
  
 # Camera Setup
 cap = cv2.VideoCapture(0)
@@ -24,7 +25,10 @@ print(pathImages)
 
 while True:
     success, img = cap.read()
+    pathFullImage = os.path.join(folderPath, pathImages[imgNumber])
+    imgCurrent = cv2.imread(pathFullImage)
     cv2.imshow("Image", img)
+    cv2.imshow("Presentation", imgCurrent)
     key = cv2.waitKey(1)
     if key == ord("q"):
         break
