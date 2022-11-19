@@ -11,12 +11,16 @@ import numpy as np
 
 # setup variable
 width, height = 1500, 100
+folderPath= "Presentation"
  
 # Camera Setup
 cap = cv2.VideoCapture(0)
 cap.set(3, width)
 cap.set(4, height)
- 
+
+# Get list of presentation images
+pathImages = sorted(os.listdir(folderPath), key=len)
+print(pathImages) 
 
 while True:
     success, img = cap.read()
