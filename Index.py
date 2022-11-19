@@ -5,6 +5,7 @@
 
 
 from cvzone.HandTrackingModule import HandDetector
+
 import cv2
 import os
 import numpy as np
@@ -30,7 +31,7 @@ hs, ws = int(120 * 1), int(213 * 1)  # width and height of small image
 gestureThreshold = 300
 
 # Hand Detector
-detectorHand = HandDetector(detectionCon=0.8, maxHands=1)
+detectorHand = HandDetector(detectionCon=0.8, maxHands=2)
 
 while True:
     success, img = cap.read()
@@ -38,9 +39,14 @@ while True:
     imgCurrent = cv2.imread(pathFullImage)
 
  # Find the hand and its landmarks
-    hands, img = detectorHand.findHands(img)  # with draw
+    hands, img = detectorHand.findHands(img, flipType=False)  # with draw
     # Draw Gesture Threshold line
     cv2.line(img, (0, gestureThreshold), (width, gestureThreshold), (0, 255, 0), 10)
+    #coditions for gestures
+    if hands:
+        hand = hands[0]
+        fingers = detectorHand.fingersUp(hand)
+        print (fingers)
     
 
 
