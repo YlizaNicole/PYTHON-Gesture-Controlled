@@ -29,6 +29,9 @@ print(pathImages)
 imgNumber = 0
 hs, ws = int(120 * 1), int(213 * 1)  # width and height of small image
 gestureThreshold = 300
+buttonPressed = False
+buttcounter = 0
+buttondelay= 10
 
 # Hand Detector
 detectorHand = HandDetector(detectionCon=0.8, maxHands=2)
@@ -43,7 +46,7 @@ while True:
     # Draw Gesture Threshold line
     cv2.line(img, (0, gestureThreshold), (width, gestureThreshold), (0, 255, 0), 10)
 #coditions for gestures
-    if hands:
+    if hands and buttonPressed is False:  # If hand is detected
         hand = hands[0]
         fingers = detectorHand.fingersUp(hand)
         cx, cy = hand["center"]
@@ -51,12 +54,22 @@ while True:
             if fingers == [1, 0, 0, 0, 0]:
                 print("left")
                 if imgNumber > 0:
+                    buttonPressed = True
                     imgNumber -= 1
             if fingers == [0, 0, 0, 0, 1]:
-                if imgNumber < len (pathImages) -1:
-                    imgNumber += 1
                 print("right")
-            
+                if imgNumber < len (pathImages) -1:
+                    buttonPressed = True
+                    imgNumber += 1
+                
+
+    if buttonPressed:
+        buttcounter += 1
+        if buttcounter > buttondelay:
+            buttcounter=0
+            buttonPressed= False
+      
+
  #adding image to cam
     imgSmall = cv2.resize(img, (ws, hs))
     h, w, _ = imgCurrent.shape
