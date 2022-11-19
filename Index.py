@@ -5,7 +5,6 @@
 
 
 from cvzone.HandTrackingModule import HandDetector
-
 import cv2
 import os
 import numpy as np
@@ -31,7 +30,7 @@ hs, ws = int(120 * 1), int(213 * 1)  # width and height of small image
 gestureThreshold = 300
 buttonPressed = False
 buttcounter = 0
-buttondelay= 10
+buttondelay= 30
 
 # Hand Detector
 detectorHand = HandDetector(detectionCon=0.8, maxHands=2)
@@ -50,6 +49,10 @@ while True:
         hand = hands[0]
         fingers = detectorHand.fingersUp(hand)
         cx, cy = hand["center"]
+        lmList = hand["lmList"]
+        indexFinger = lmList [8] [0], lmList [8] [1]
+
+
         if cy <= gestureThreshold:
             if fingers == [1, 0, 0, 0, 0]:
                 print("left")
@@ -61,6 +64,8 @@ while True:
                 if imgNumber < len (pathImages) -1:
                     buttonPressed = True
                     imgNumber += 1
+            if fingers == [0, 1, 1, 0, 0]:
+                cv2.circle(imgCurrent, indexFinger, 12, (0, 0, 255), cv2.FILLED)
                 
 
     if buttonPressed:
