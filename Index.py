@@ -42,15 +42,18 @@ while True:
     hands, img = detectorHand.findHands(img, flipType=False)  # with draw
     # Draw Gesture Threshold line
     cv2.line(img, (0, gestureThreshold), (width, gestureThreshold), (0, 255, 0), 10)
-    #coditions for gestures
+#coditions for gestures
     if hands:
         hand = hands[0]
         fingers = detectorHand.fingersUp(hand)
-        print (fingers)
-    
-
-
-#adding image to cam
+        cx, cy = hand["center"]
+        if cy <= gestureThreshold:
+            if fingers == [1, 0, 0, 0, 0]:
+                print("left")
+            if fingers == [0, 0, 0, 0, 1]:
+                print("right")
+            
+ #adding image to cam
     imgSmall = cv2.resize(img, (ws, hs))
     h, w, _ = imgCurrent.shape
     imgCurrent[0:hs, w-ws:w]=imgSmall 
