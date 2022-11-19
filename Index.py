@@ -9,10 +9,11 @@ import cv2
 import os
 import numpy as np
 
+
 # setup variable
-width, height = 100, 100
+width, height = 1500, 100
 folderPath= "Presentation"
-imgNumber = 0
+
  
 # Camera Setup
 cap = cv2.VideoCapture(0)
@@ -23,10 +24,25 @@ cap.set(4, height)
 pathImages = sorted(os.listdir(folderPath), key=len)
 print(pathImages) 
 
+# Img Variables
+imgNumber = 0
+hs, ws = int(120 * 1), int(213 * 1)  # width and height of small image
+
+# Hand Detector
+detectorHand = HandDetector(detectionCon=0.8, maxHands=1)
+
 while True:
     success, img = cap.read()
     pathFullImage = os.path.join(folderPath, pathImages[imgNumber])
     imgCurrent = cv2.imread(pathFullImage)
+
+ # Find the hand and its landmarks
+    hands, img = detectorHand.findHands(img)  # with draw
+
+#adding image to cam
+    imgSmall = cv2.resize(img, (ws, hs))
+    h, w, _ = imgCurrent.shape
+    imgCurrent[0:hs, w-ws:w]=imgSmall 
     cv2.imshow("Image", img)
     cv2.imshow("Presentation", imgCurrent)
     key = cv2.waitKey(1)
