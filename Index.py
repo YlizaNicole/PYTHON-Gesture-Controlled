@@ -27,6 +27,7 @@ print(pathImages)
 # Img Variables
 imgNumber = 0
 hs, ws = int(120 * 1), int(213 * 1)  # width and height of small image
+gestureThreshold = 300
 
 # Hand Detector
 detectorHand = HandDetector(detectionCon=0.8, maxHands=1)
@@ -38,6 +39,10 @@ while True:
 
  # Find the hand and its landmarks
     hands, img = detectorHand.findHands(img)  # with draw
+    # Draw Gesture Threshold line
+    cv2.line(img, (0, gestureThreshold), (width, gestureThreshold), (0, 255, 0), 10)
+    
+
 
 #adding image to cam
     imgSmall = cv2.resize(img, (ws, hs))
